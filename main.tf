@@ -1,6 +1,6 @@
 resource "aws_security_group" "main" {
-  name        = "${var.env}-${var.type}-alb"
-  description = "${var.env}-${var.type}-alb"
+  name        = local.name
+  description = local.name
   vpc_id      = var.vpc_id
 
   dynamic "ingress" {
@@ -22,16 +22,16 @@ resource "aws_security_group" "main" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
-  tags = merge(var.tags, { Name = "${var.env}-${var.type}-alb" })
+  tags = merge(var.tags, { Name = local.name })
 }
 
 resource "aws_lb" "main" {
-  name               = "${var.env}-${var.type}"
+  name               = local.name
   internal           = var.internal
   load_balancer_type = "application"
   security_groups    = [aws_security_group.main.id]
   subnets            = var.subnets
-  tags               = merge(var.tags, { Name = "${var.env}-${var.type}-alb" })
+  tags               = merge(var.tags, { Name = local.name })
 }
 
 #resource "aws_lb_listener" "main" {
