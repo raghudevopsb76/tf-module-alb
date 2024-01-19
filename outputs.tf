@@ -3,6 +3,6 @@ output "listener_arn" {
 }
 
 output "alb_name" {
-  value = aws_lb.main.name
+  value = aws_lb.main.dns_name
 }
 
