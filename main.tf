@@ -34,25 +34,7 @@ resource "aws_lb" "main" {
   tags               = merge(var.tags, { Name = local.name })
 }
 
-resource "aws_lb_listener" "http-private" {
-  count             = var.enable_https ? 0 : 1
-  load_balancer_arn = aws_lb.main.arn
-  port              = "80"
-  protocol          = "HTTP"
-
-  default_action {
-    type = "fixed-response"
-
-    fixed_response {
-      content_type = "text/plain"
-      message_body = "ERROR"
-      status_code  = "500"
-    }
-  }
-}
-
-resource "aws_lb_listener" "https-public" {
-  count             = var.enable_https ? 1 : 0
+resource "aws_lb_listener" "https" {
   load_balancer_arn = aws_lb.main.arn
   port              = "443"
   protocol          = "HTTPS"
@@ -71,8 +53,7 @@ resource "aws_lb_listener" "https-public" {
   }
 }
 
-resource "aws_lb_listener" "http-public" {
-  count             = var.enable_https ? 1 : 0
+resource "aws_lb_listener" "http" {
   load_balancer_arn = aws_lb.main.arn
   port              = "80"
   protocol          = "HTTP"
