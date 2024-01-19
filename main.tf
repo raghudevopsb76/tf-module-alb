@@ -6,14 +6,14 @@ resource "aws_security_group" "main" {
   ingress {
     from_port        = 80
     to_port          = 80
-    protocol         = "-1"
+    protocol         = "tcp"
     cidr_blocks      = var.sg_cidrs
   }
 
   ingress {
     from_port        = 443
     to_port          = 443
-    protocol         = "-1"
+    protocol         = "tcp"
     cidr_blocks      = var.sg_cidrs
   }
 
