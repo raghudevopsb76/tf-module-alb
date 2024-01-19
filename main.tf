@@ -50,21 +50,26 @@ resource "aws_lb_listener" "http" {
   }
 }
 
-#resource "aws_lb_listener" "https" {
-#  count             = var.enable_https ? 1 : 0
-#  load_balancer_arn = aws_lb.main.arn
-#  port              = "443"
-#  protocol          = "HTTPS"
-#  ssl_policy        = "ELBSecurityPolicy-2016-08"
-#  certificate_arn   = var.certificate_arn
-#
-#
-#  default_action {
-#    type             = "forward"
-#    target_group_arn = var.target_group_arn
-#  }
-#}
-#
+resource "aws_lb_listener" "https" {
+  count             = var.enable_https ? 1 : 0
+  load_balancer_arn = aws_lb.main.arn
+  port              = "443"
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = var.certificate_arn
+
+
+  default_action {
+    type = "fixed-response"
+
+    fixed_response {
+      content_type = "text/plain"
+      message_body = "ERROR"
+      status_code  = "500"
+    }
+  }
+}
+
 #resource "aws_lb_listener" "http" {
 #  count             = var.enable_https ? 1 : 0
 #  load_balancer_arn = aws_lb.main.arn
